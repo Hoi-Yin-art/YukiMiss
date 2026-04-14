@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yuki - 個人頁面</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      background: url(兔女僕咖啡.png) no-repeat;
+      --bg-primary: #ac243a00;
+      --bg-secondary: #70081100;
+      --fg: #ffffff;
+      --fg-muted: #ffffff;
+      --accent: #e8a87c;
+      --accent-warm: #3d081c;
+      --card-bg: rgba(190, 43, 80, 0.137);
+      --border: rgba(168, 130, 104, 0.2);
+      --facebook: #4718f2;
+      --instagram: #9a16ce;
+      --discord: #5865f2;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg-primary);
+      color: var(--fg);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 背景層 */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212, 120, 92, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(232, 168, 124, 0.12) 0%, transparent 50%),
+        linear-gradient(160deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    }
+
+    /* 浮動裝飾元素 */
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--accent-warm);
+      top: -100px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--accent);
+      bottom: -50px;
+      right: -50px;
+      animation-delay: -7s;
+    }
+
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+      background: #c9a87c;
+      top: 50%;
+      right: 20%;
+      animation-delay: -14s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -20px) scale(1.05); }
+      50% { transform: translate(-20px, 30px) scale(0.95); }
+      75% { transform: translate(20px, 20px) scale(1.02); }
+    }
+
+    /* 粒子效果 */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-rise 8s ease-in infinite;
+    }
+
+    @keyframes particle-rise {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0);
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-20vh) scale(1);
+      }
+    }
+
+    /* 卡片 */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      max-width: 340px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+      animation: card-entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes card-entrance {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 頭像 */
+.avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+}
+
+/* RGB 流光外圈 */
+.avatar-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(
+    red,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    magenta,
+    red
+  );
+  animation: ring-rotate 2.5s linear infinite;
+  filter: blur(2px);
+  z-index: 0;
+}
+
+/* 內層遮罩（讓邊框變成環狀） */
+.avatar-ring::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  background: var(--bg-secondary, #fff);
+  border-radius: 50%;
+}
+
+/* 旋轉動畫 */
+@keyframes ring-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 頭像 */
+.avatar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bg-secondary);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+    /* 文字 */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+      animation: text-fade-in 0.6s 0.2s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes text-fade-in {
+      to { opacity: 1; }
+    }
+
+    .bio {
+      color: var(--fg-muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      animation: text-fade-in 0.6s 0.35s ease-out forwards;
+      opacity: 0;
+    }
+
+    /* 社交連結 */
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1.25rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+      animation: btn-entrance 0.5s ease-out forwards;
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .btn:nth-child(1) { animation-delay: 0.5s; }
+    .btn:nth-child(2) { animation-delay: 0.65s; }
+    .btn:nth-child(3) { animation-delay: 0.8s; }
+    .btn:nth-child(4) { animation-delay: 0.95s; }
+
+    @keyframes btn-entrance {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn:hover::before {
+      opacity: 1;
+    }
+
+    .btn:hover {
+      transform: translateX(8px) scale(1.02);
+    }
+
+    .btn:active {
+      transform: translateX(4px) scale(0.98);
+    }
+
+    .btn i {
+      font-size: 1.1rem;
+      transition: transform 0.3s;
+    }
+
+    .btn:hover i {
+      transform: scale(1.15);
+    }
+
+    /* 各平台按鈕樣式 */
+    .facebook {
+      background: rgba(10, 7, 209, 0.521);
+      border: 1px solid rgba(24, 119, 242, 0.3);
+      color: #ffffff;
+    }
+
+    .facebook:hover {
+      background: rgba(17, 5, 88, 0.74);
+      border-color: rgba(190, 191, 255, 0.616);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* ===== RGB 流光邊框核心 ===== */
+.btn {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 12px; /* 可自行調整 */
+}
+
+/* 外層流光 */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    #ff004c,
+    #ff9900,
+    #ffee00,
+    #00ff66,
+    #00c3ff,
+    #7a00ff,
+    #ff004c
+  );
+  background-size: 400% 400%;
+  animation: rgbFlow 6s linear infinite;
+  filter: blur(6px);
+  opacity: 0.9;
+  border-radius: inherit;
+}
+
+/* 內層底色遮罩（讓內容清晰） */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: rgba(0, 0, 0, 0.75); /* 可改成你原本按鈕背景 */
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* 流光動畫 */
+@keyframes rgbFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+    /* Focus 狀態 */
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* 響應式 */
+    @media (max-width: 400px) {
+      .card {
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+      }
+
+      .avatar-wrapper {
+        width: 100px;
+        height: 100px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .bio {
+        font-size: 0.875rem;
+      }
+    }
+
+    /* 減少動效 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景層 -->
+  <div class="bg-layer">
+    <div class="bg-gradient"></div>
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    <div class="particles" id="particles"></div>
+  </div>
+
+  <div class="card">
+    <div class="avatar-wrapper">
+      <div class="avatar-ring"></div>
+      <img src="output.jpg" class="avatar" />
+    </div>
+    
+    <h1>Yuki & 小姐</h1>
+    <p class="bio">• 們大家好～我是Yuki小姐！
+    </p>
+    
+    <p class="bio">• 偶像系～想要專一的你們（不是啦～
+    </p>
+
+    <p class="bio">• 是港V！
+    </p>
+
+    <div class="social-links">
+      <a href="https://www.facebook.com/profile.php?id=61573278368191" target="_blank" rel="noopener noreferrer" class="btn facebook">
+        <i class="fab fa-facebook"></i> Xiaoxue Misa Yuki
+      </a>
+      
+      <a href="https://www.instagram.com/haiyi_0206?igsh=MWhsb2k1cDUweWlybw==" target="_blank" rel="noopener noreferrer" class="btn facebook">
+        <i class="fab fa-instagram"></i> haiyi_0206
+      </a>
+      
+      <a href="https://www.youtube.com/@Yuki-%E5%B0%8F%E5%A7%90" target="_blank" rel="noopener noreferrer" class="btn facebook">
+        <i class="fab fa-youtube"></i> Yuki_小姐
+      </a>
+      
+      <a href="https://discord.gg/yw2pFFDW7j" target="_blank" rel="noopener noreferrer" class="btn facebook">
+        <i class="fab fa-discord"></i> 【開心玩遊戲HK, TW, MO群】
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // 創建浮動粒子 {
+      const container = document.getElementById('particles');
+      if (!container) return;
+
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+        particle.style.width = (2 + Math.random() * 2) + 'px';
+        particle.style.height = particle.style.width;
+        container.appendChild(particle);
+      }
+    ;
+  </script>
+</body>
+</html>
