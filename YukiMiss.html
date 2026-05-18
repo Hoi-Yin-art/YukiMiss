@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yuki - 個人頁面</title>
+  <title>Yuki - 個人音樂頁面</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,18 +16,15 @@
     }
 
     :root {
-      background: url(生成厚涂油画质感奇幻插画.png) no-repeat;
-      --bg-primary: #ac243a00;
-      --bg-secondary: #70081100;
+      --bg-primary: #120408;
+      --bg-secondary: #3d081c;
       --fg: #ffffff;
-      --fg-muted: #ffffff;
-      --accent: #e8a87c;
+      --fg-muted: #f0f0f0;
+      --accent: #d60a0a;
       --accent-warm: #3d081c;
-      --card-bg: rgba(190, 43, 80, 0.137);
-      --border: rgba(168, 130, 104, 0.2);
-      --facebook: #4718f2;
-      --instagram: #9a16ce;
-      --discord: #5865f2;
+      --card-bg: rgba(190, 43, 80, 0.15);
+      --border: rgba(255, 255, 255, 0.15);
+      --player-bg: rgba(22, 16, 20, 0.9);
     }
 
     html {
@@ -37,17 +34,19 @@
     body {
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
+      padding-bottom: 120px; /* 為底部播放列預留充足空間 */
       font-family: 'Noto Sans TC', sans-serif;
-      background: var(--bg-primary);
+      background-color: var(--bg-primary);
       color: var(--fg);
       overflow-x: hidden;
       position: relative;
     }
 
-    /* 背景層 */
+    /* 背景層修正 */
     .bg-layer {
       position: fixed;
       inset: 0;
@@ -58,10 +57,13 @@
     .bg-gradient {
       position: absolute;
       inset: 0;
+      /* 將油畫背景融合進漸層層 */
       background: 
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212, 120, 92, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(232, 168, 124, 0.12) 0%, transparent 50%),
-        linear-gradient(160deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212, 120, 92, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(232, 168, 124, 0.15) 0%, transparent 50%),
+        linear-gradient(160deg, rgba(18, 4, 8, 0.85) 0%, rgba(61, 8, 28, 0.9) 100%),
+        url(生成厚涂油画质感奇幻插画.png) no-repeat center center;
+      background-size: cover;
     }
 
     /* 浮動裝飾元素 */
@@ -69,36 +71,13 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(60px);
-      opacity: 0.4;
+      opacity: 0.3;
       animation: float 20s ease-in-out infinite;
     }
 
-    .shape-1 {
-      width: 300px;
-      height: 300px;
-      background: var(--accent-warm);
-      top: -100px;
-      left: -100px;
-      animation-delay: 0s;
-    }
-
-    .shape-2 {
-      width: 200px;
-      height: 200px;
-      background: var(--accent);
-      bottom: -50px;
-      right: -50px;
-      animation-delay: -7s;
-    }
-
-    .shape-3 {
-      width: 150px;
-      height: 150px;
-      background: #c9a87c;
-      top: 50%;
-      right: 20%;
-      animation-delay: -14s;
-    }
+    .shape-1 { width: 300px; height: 300px; background: var(--accent-warm); top: -100px; left: -100px; animation-delay: 0s; }
+    .shape-2 { width: 200px; height: 200px; background: var(--accent); bottom: -50px; right: -50px; animation-delay: -7s; }
+    .shape-3 { width: 150px; height: 150px; background: #c9a87c; top: 50%; right: 20%; animation-delay: -14s; }
 
     @keyframes float {
       0%, 100% { transform: translate(0, 0) scale(1); }
@@ -108,12 +87,7 @@
     }
 
     /* 粒子效果 */
-    .particles {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
+    .particles { position: absolute; inset: 0; overflow: hidden; }
     .particle {
       position: absolute;
       width: 3px;
@@ -125,20 +99,10 @@
     }
 
     @keyframes particle-rise {
-      0% {
-        opacity: 0;
-        transform: translateY(100vh) scale(0);
-      }
-      10% {
-        opacity: 0.6;
-      }
-      90% {
-        opacity: 0.3;
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-20vh) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(100vh) scale(0); }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-20vh) scale(1); }
     }
 
     /* 卡片 */
@@ -154,78 +118,54 @@
       max-width: 340px;
       width: 100%;
       text-align: center;
-      box-shadow: 
-        0 4px 24px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
       animation: card-entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       opacity: 0;
       transform: translateY(30px);
+      margin-bottom: 20px;
     }
 
-    @keyframes card-entrance {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    @keyframes card-entrance { to { opacity: 1; transform: translateY(0); } }
 
     /* 頭像 */
-.avatar-wrapper {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 1.5rem;
-}
+    .avatar-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem;
+    }
 
-/* RGB 流光外圈 */
-.avatar-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: conic-gradient(
-    red,
-    yellow,
-    lime,
-    cyan,
-    blue,
-    magenta,
-    red
-  );
-  animation: ring-rotate 2.5s linear infinite;
-  filter: blur(2px);
-  z-index: 0;
-}
+    .avatar-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+      animation: ring-rotate 2.5s linear infinite;
+      filter: blur(2px);
+      z-index: 0;
+    }
 
-/* 內層遮罩（讓邊框變成環狀） */
-.avatar-ring::after {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  background: var(--bg-secondary, #fff);
-  border-radius: 50%;
-}
+    .avatar-ring::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      background: #2a0513; 
+      border-radius: 50%;
+    }
 
-/* 旋轉動畫 */
-@keyframes ring-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+    @keyframes ring-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* 頭像 */
-.avatar {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--bg-secondary);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 1;
-}
-
-.avatar:hover {
-  transform: scale(1.05);
-}
+    .avatar {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #2a0513;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1;
+    }
+    .avatar:hover { transform: scale(1.05); }
 
     /* 文字 */
     h1 {
@@ -234,22 +174,73 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
       letter-spacing: 0.02em;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
       animation: text-fade-in 0.6s 0.2s ease-out forwards;
       opacity: 0;
     }
-
-    @keyframes text-fade-in {
-      to { opacity: 1; }
-    }
+    @keyframes text-fade-in { to { opacity: 1; } }
 
     .bio {
       color: var(--fg-muted);
       font-size: 0.95rem;
       font-weight: 300;
       line-height: 1.6;
-      margin-bottom: 2rem;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
       animation: text-fade-in 0.6s 0.35s ease-out forwards;
       opacity: 0;
+    }
+
+    /* 音樂音訊播放專區標題 */
+    .audio-section-title {
+      font-size: 1rem;
+      color: #ff4d6d;
+      margin: 1.5rem 0 0.75rem;
+      text-align: left;
+      font-weight: 500;
+      border-left: 3px solid var(--accent);
+      padding-left: 8px;
+    }
+
+    /* 音軌清單 */
+    .audio-tracks {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .track-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+    .track-item:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateX(4px);
+    }
+    .track-item.playing {
+      background: rgba(214, 10, 10, 0.25);
+      border-color: var(--accent);
+    }
+    .track-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+    .track-play-icon {
+      color: #ff4d6d;
+      font-size: 0.9rem;
     }
 
     /* 社交連結 */
@@ -269,12 +260,14 @@
       text-decoration: none;
       font-weight: 500;
       font-size: 0.9rem;
+      color: #fff;
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
       overflow: hidden;
       animation: btn-entrance 0.5s ease-out forwards;
       opacity: 0;
       transform: translateX(-20px);
+      z-index: 1;
     }
 
     .btn:nth-child(1) { animation-delay: 0.5s; }
@@ -282,145 +275,180 @@
     .btn:nth-child(3) { animation-delay: 0.8s; }
     .btn:nth-child(4) { animation-delay: 0.95s; }
 
-    @keyframes btn-entrance {
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
+    @keyframes btn-entrance { to { opacity: 1; transform: translateX(0); } }
 
+    /* RGB 流光邊框核心 */
     .btn::before {
-      content: '';
+      content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity 0.3s;
+      inset: -3px;
+      z-index: -2;
+      background: linear-gradient(90deg, #ff004c, #ff9900, #ffee00, #00ff66, #00c3ff, #7a00ff, #ff004c);
+      background-size: 400% 400%;
+      animation: rgbFlow 6s linear infinite;
+      filter: blur(4px);
+      opacity: 0.9;
+      border-radius: inherit;
     }
 
-    .btn:hover::before {
-      opacity: 1;
+    .btn::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      background: rgba(20, 10, 15, 0.9);
+      border-radius: inherit;
+      z-index: -1;
     }
 
-    .btn:hover {
-      transform: translateX(8px) scale(1.02);
+    .btn:hover { transform: translateX(8px) scale(1.02); }
+    .btn:active { transform: translateX(4px) scale(0.98); }
+    .btn i { font-size: 1.1rem; transition: transform 0.3s; }
+    .btn:hover i { transform: scale(1.15); }
+
+    @keyframes rgbFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-
-    .btn:active {
-      transform: translateX(4px) scale(0.98);
-    }
-
-    .btn i {
-      font-size: 1.1rem;
-      transition: transform 0.3s;
-    }
-
-    .btn:hover i {
-      transform: scale(1.15);
-    }
-
-    /* 各平台按鈕樣式 */
-    .facebook {
-      background: rgba(10, 7, 209, 0.521);
-      border: 1px solid rgba(24, 119, 242, 0.3);
-      color: #ffffff;
-    }
-
-    .facebook:hover {
-      background: rgba(17, 5, 88, 0.74);
-      border-color: rgba(190, 191, 255, 0.616);
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
-    }
-
-    /* ===== RGB 流光邊框核心 ===== */
-.btn {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 12px; /* 可自行調整 */
-}
-
-/* 外層流光 */
-.btn::before {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  z-index: -1;
-  background: linear-gradient(
-    90deg,
-    #ff004c,
-    #ff9900,
-    #ffee00,
-    #00ff66,
-    #00c3ff,
-    #7a00ff,
-    #ff004c
-  );
-  background-size: 400% 400%;
-  animation: rgbFlow 6s linear infinite;
-  filter: blur(6px);
-  opacity: 0.9;
-  border-radius: inherit;
-}
-
-/* 內層底色遮罩（讓內容清晰） */
-.btn::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  background: rgba(0, 0, 0, 0.75); /* 可改成你原本按鈕背景 */
-  border-radius: inherit;
-  z-index: -1;
-}
-
-/* 流光動畫 */
-@keyframes rgbFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
     /* footer */
     .footer {
       margin-top: 25px;
       font-size: 12px;
-      color: #000000;
+      color: #ffffff;
+      opacity: 0.6;
     }
 
-    /* Focus 狀態 */
-    .btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+    /* ===== 底部全域音樂播放列 ===== */
+    .audio-player-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--player-bg);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
+      z-index: 1000;
+      display: none; /* 有音樂播放時才會顯示 */
     }
 
-    /* 響應式 */
-    @media (max-width: 400px) {
-      .card {
-        padding: 2rem 1.5rem;
-        border-radius: 20px;
-      }
-
-      .avatar-wrapper {
-        width: 100px;
-        height: 100px;
-      }
-
-      h1 {
-        font-size: 1.75rem;
-      }
-
-      .bio {
-        font-size: 0.875rem;
-      }
+    .player-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 30%;
     }
 
-    /* 減少動效 */
+    .player-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      object-fit: cover;
+    }
+
+    .player-meta {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .player-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-artist {
+      font-size: 0.75rem;
+      color: #ff4d6d;
+    }
+
+    .player-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 45%;
+    }
+
+    .ctrl-btn {
+      background: #fff;
+      border: none;
+      color: #000;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: transform 0.2s;
+    }
+    .ctrl-btn:hover { transform: scale(1.05); }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .progress-bar {
+      flex-grow: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .progress-current {
+      height: 100%;
+      background: #ff4d6d;
+      width: 0%;
+      border-radius: 3px;
+    }
+
+    .player-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      width: 25%;
+      font-size: 0.8rem;
+    }
+
+    .volume-slider {
+      width: 80px;
+      cursor: pointer;
+      accent-color: #ff4d6d;
+    }
+
+    /* 響應式調整 */
+    @media (max-width: 500px) {
+      .card { padding: 2rem 1.5rem; border-radius: 20px; }
+      .avatar-wrapper { width: 100px; height: 100px; }
+      h1 { font-size: 1.75rem; }
+      .bio { font-size: 0.875rem; }
+      .player-left { width: 60%; }
+      .player-center { width: 40%; }
+      .player-right { display: none; } /* 手機版隱藏音量 */
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -431,6 +459,7 @@
   </style>
 </head>
 <body>
+
   <!-- 背景層 -->
   <div class="bg-layer">
     <div class="bg-gradient"></div>
@@ -440,53 +469,94 @@
     <div class="particles" id="particles"></div>
   </div>
 
+  <!-- 個人主卡片 -->
   <div class="card">
     <div class="avatar-wrapper">
       <div class="avatar-ring"></div>
-      <img src="Avatar.png" class="avatar" />
+      <img src="Avatar.png" class="avatar" alt="Yuki" />
     </div>
     
     <h1>Yuki & 小姐</h1>
-    <p class="bio">• 們大家好～我是Yuki小姐！
-    </p>
+    <p class="bio">• 們大家好～我是Yuki小姐！</p>
+    <p class="bio">• 偶像系～想要專一的你們（不是啦～</p>
+    <p class="bio">• 是港V！</p>
     
-    <p class="bio">• 偶像系～想要專一的你們（不是啦～
-    </p>
+    <!-- 🎵 音訊播放專區 -->
+    <div class="audio-section-title"><i class="fas fa-music"></i> Voice & Music</div>
+    <div class="audio-tracks">
+      
+      <div class="track-item" data-src="Way_Back_Home.mp3" data-title="Way_Back_Home💕">
+        <span class="track-name">Way_Back_Home💕</span>
+        <span class="track-play-icon"><i class="fas fa-play"></i></span>
+      </div>
 
-    <p class="bio">• 是港V！
-    </p>
+      <div class="track-item" data-src="Rosa_Walton_Hallie_Coggins.mp3" data-title="Cyberpunk 2077 Edgerunner">
+        <span class="track-name">Cyberpunk 2077 Edgerunner</span>
+        <span class="track-play-icon"><i class="fas fa-play"></i></span>
+      </div>
 
+    </div>
+
+    <!-- 社群按鈕清單 -->
     <div class="social-links">
-      <a href="https://www.facebook.com/profile.php?id=61573278368191" target="_blank" rel="noopener noreferrer" class="btn facebook">
+      <a href="https://www.facebook.com/profile.php?id=61573278368191" target="_blank" rel="noopener noreferrer" class="btn">
         <i class="fab fa-facebook"></i> Xiaoxue Misa Yuki
       </a>
       
-      <a href="https://www.instagram.com/haiyi_0206?igsh=MWhsb2k1cDUweWlybw==" target="_blank" rel="noopener noreferrer" class="btn facebook">
+      <a href="https://www.instagram.com/haiyi_0206?igsh=MWhsb2k1cDUweWlybw==" target="_blank" rel="noopener noreferrer" class="btn">
         <i class="fab fa-instagram"></i> haiyi_0206
       </a>
       
-      <a href="https://www.youtube.com/@Yuki-%E5%B0%8F%E5%A7%90" target="_blank" rel="noopener noreferrer" class="btn facebook">
+      <a href="https://www.youtube.com/@Yuki-%E5%B0%8F%E5%A7%90" target="_blank" rel="noopener noreferrer" class="btn">
         <i class="fab fa-youtube"></i> Yuki_小姐
       </a>
       
-      <a href="https://discord.gg/yw2pFFDW7j" target="_blank" rel="noopener noreferrer" class="btn facebook">
+      <a href="https://discord.gg/yw2pFFDW7j" target="_blank" rel="noopener noreferrer" class="btn">
         <i class="fab fa-discord"></i> 【開心玩遊戲HK, TW, MO群】
       </a>
     </div>
 
-  <div class="footer">
-    © 2026 | Star RGB Page
+    <div class="footer">
+      © 2026 | Star RGB Page
+    </div>
   </div>
 
+  <!-- 隱藏的原生 HTML5 音訊標籤 -->
+  <audio id="main-audio" preload="metadata"></audio>
+
+  <!-- 底部固定全域播放控制列 -->
+  <div class="audio-player-bar" id="player-bar">
+    <div class="player-left">
+      <img src="Avatar.png" alt="Mini Avatar" class="player-avatar">
+      <div class="player-meta">
+        <span class="player-title" id="bar-title">未選取曲目</span>
+        <span class="player-artist">Yuki & 小姐</span>
+      </div>
+    </div>
+
+    <div class="player-center">
+      <button class="ctrl-btn" id="bar-play-toggle"><i class="fas fa-play"></i></button>
+      <div class="progress-container">
+        <span id="time-current">00:00</span>
+        <div class="progress-bar" id="bar-progress-bg">
+          <div class="progress-current" id="bar-progress-fill"></div>
+        </div>
+        <span id="time-total">00:00</span>
+      </div>
+    </div>
+
+    <div class="player-right">
+      <i class="fas fa-volume-up" style="color:#ff4d6d;"></i>
+      <input type="range" class="volume-slider" id="volume-range" min="0" max="1" step="0.05" value="0.8">
+    </div>
   </div>
 
+  <!-- JavaScript 控制邏輯 -->
   <script>
-    // 創建浮動粒子 {
-      const container = document.getElementById('particles');
-      if (!container) return;
-
+    // 1. 創建粒子特效
+    const container = document.getElementById('particles');
+    if (container) {
       const particleCount = 15;
-      
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
@@ -497,7 +567,116 @@
         particle.style.height = particle.style.width;
         container.appendChild(particle);
       }
-    ;
+    }
+
+    // 2. 音訊播放核心邏輯
+    const audio = document.getElementById('main-audio');
+    const playerBar = document.getElementById('player-bar');
+    const trackItems = document.querySelectorAll('.track-item');
+    
+    const barTitle = document.getElementById('bar-title');
+    const barPlayToggle = document.getElementById('bar-play-toggle');
+    const progressBg = document.getElementById('bar-progress-bg');
+    const progressFill = document.getElementById('bar-progress-fill');
+    const timeCurrent = document.getElementById('time-current');
+    const timeTotal = document.getElementById('time-total');
+    const volumeRange = document.getElementById('volume-range');
+
+    let currentTrackItem = null;
+
+    trackItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const src = item.getAttribute('data-src');
+        const title = item.getAttribute('data-title');
+
+        // 連續點擊同一首歌：切換播放狀態
+        if (currentTrackItem === item) {
+          togglePlay();
+          return;
+        }
+
+        // 清除上一首狀態
+        if (currentTrackItem) {
+          currentTrackItem.classList.remove('playing');
+          currentTrackItem.querySelector('.track-play-icon i').className = 'fas fa-play';
+        }
+
+        // 設定新歌曲
+        currentTrackItem = item;
+        item.classList.add('playing');
+        item.querySelector('.track-play-icon i').className = 'fas fa-pause';
+
+        audio.src = src;
+        barTitle.innerText = title;
+
+        playerBar.style.display = 'flex';
+        audio.play().catch(err => console.log("播放被瀏覽器阻擋，需使用者點擊互動:", err));
+        barPlayToggle.innerHTML = '<i class="fas fa-pause"></i>';
+      });
+    });
+
+    barPlayToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlay();
+    });
+
+    function togglePlay() {
+      if (!currentTrackItem) return;
+
+      if (audio.paused) {
+        audio.play();
+        barPlayToggle.innerHTML = '<i class="fas fa-pause"></i>';
+        currentTrackItem.querySelector('.track-play-icon i').className = 'fas fa-pause';
+      } else {
+        audio.pause();
+        barPlayToggle.innerHTML = '<i class="fas fa-play"></i>';
+        currentTrackItem.querySelector('.track-play-icon i').className = 'fas fa-play';
+      }
+    }
+
+    // 當歌曲中介資料載入完成時，即時更新總時間 (防止出現 NaN)
+    audio.addEventListener('loadedmetadata', () => {
+      timeTotal.innerText = formatTime(audio.duration);
+    });
+
+    // 更新進度條
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        const percentage = (audio.currentTime / audio.duration) * 100;
+        progressFill.style.width = percentage + '%';
+        timeCurrent.innerText = formatTime(audio.currentTime);
+      }
+    });
+
+    // 歌曲播放完畢自動重置狀態
+    audio.addEventListener('ended', () => {
+      barPlayToggle.innerHTML = '<i class="fas fa-play"></i>';
+      if (currentTrackItem) {
+        currentTrackItem.querySelector('.track-play-icon i').className = 'fas fa-play';
+      }
+      progressFill.style.width = '0%';
+      timeCurrent.innerText = '00:00';
+    });
+
+    // 點擊進度條跳轉
+    progressBg.addEventListener('click', (e) => {
+      if (!audio.innerHTML && !audio.src) return;
+      const rect = progressBg.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      audio.currentTime = (clickX / rect.width) * audio.duration;
+    });
+
+    // 調整音量
+    volumeRange.addEventListener('input', (e) => {
+      audio.volume = e.target.value;
+    });
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return "00:00";
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60);
+      return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }
   </script>
 </body>
 </html>
