@@ -17,9 +17,8 @@
     }
 
     :root {
-      background: url(poly-shapes-joint-8k-aq.jpg) no-repeat center center fixed;
-      --bg-primary: #00000034;
-      --bg-secondary: #0000006b;
+      --bg-primary: ;
+      --bg-secondary: ;
       --fg: #e9e9e9f5; /* 經典黑客綠 */
       --fg-muted: #eeeeee;
       --accent: #f3f3f3de;
@@ -42,7 +41,9 @@
       padding: 1.5rem;
       padding-bottom: 120px;
       font-family: 'Fira Code', 'Noto Sans TC', monospace;
-      background-color: var(--bg-primary);
+      /* 修正：將背景圖從 :root 移至 body */
+      background: url('Render High Definition GIF by time.gif') no-repeat center/cover fixed;
+      background-color: #111; 
       color: var(--fg);
       overflow-x: hidden;
       position: relative;
@@ -308,7 +309,7 @@
     .btn:hover {
       background: rgba(133, 5, 133, 0.15);
       border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(230, 86, 186, 0.4);
+      box-shadow: 0 0 15px rgba(230, 86, 187, 0.233);
       color: #ffffff;
       transform: scale(1.02);
     }
@@ -493,15 +494,14 @@
     <div class="audio-section-title"><i class="fas fa-terminal"></i> CORE_AUDIO_LOG</div>
     <div class="audio-tracks">
       
-      <div class="track-item" data-src="Way_Back_Home.mp3" data-title="回家的路💕">
-        <span class="track-name">回家的路💕</span>
+      <div class="track-item" data-src="Way_Back_Home.mp3" data-title="Shaun">
+        <span class="track-name">Way_Back_Home</span>
         <span class="track-play-icon"><i class="fas fa-play"></i></span>
       </div>
+  </div>
 
-    </div>
-
-    <!-- 社群按鈕清單 -->
     <div class="social-links">
+      <>>-<»>==<社交媒體>==<«>-<<>
       <a href="https://www.facebook.com/profile.php?id=61573278368191" target="_blank" rel="noopener noreferrer" class="btn">
         <i class="fab fa-facebook"></i> FB // Xiaoxue Misa Yuki
       </a>
