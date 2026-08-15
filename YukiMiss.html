@@ -7,8 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 引入黑客風愛用的等寬字型與科技感字體 -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Noto+Sans+TC:wght@300;500;700&family=Playfair+Display:wght@600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -17,13 +16,15 @@
     }
 
     :root {
-      --fg: #e9e9e9; /* 經典黑客綠 */
-      --fg-muted: #eeeeee;
-      --accent: #f3f3f39c;
-      --accent-dim: rgb(157, 103, 179);
-      --card-bg: rgba(105, 105, 105, 0.205);
-      --border: #86868623;
-      --player-bg: rgba(85, 8, 46, 0.493);
+      --bg-primary: rgba(0, 0, 0, 0.205);
+      --bg-secondary: ;
+      --fg: #ffffff; 
+      --fg-muted: #ffffffee;
+      --accent: #eeeeee;
+      --accent-dim: rgba(172, 43, 86, 0.486);
+      --card-bg: rgba(148, 71, 129, 0.199);
+      --border: #af5190; /* 修正：補足 6 位碼 */
+      --player-bg: rgba(184, 53, 177, 0.404);
     }
 
     html {
@@ -40,46 +41,45 @@
       padding-bottom: 120px;
       font-family: 'Fira Code', 'Noto Sans TC', monospace;
       /* 修正：將背景圖從 :root 移至 body */
-      background: url('38434fa7-e5c4-4f84-80c6-553d174175fe.jpeg') no-repeat center/cover fixed;
-      background-color: #111111; 
+      background: url('bb071e44-da8e-4fb7-8c0d-e08da3b767d1.jpeg') no-repeat center/cover fixed;
+      background-color: #111; 
       color: var(--fg);
       overflow-x: hidden;
       position: relative;
+    }
+
+    /* 背景遮罩，防止背景圖太亮干擾文字 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      z-index: 0;
     }
 
     /* 畫布背景層（數位雨） */
     #canvas-matrix {
       position: fixed;
       inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.35; /* 避免干擾文字閱讀 */
-    }
-
-    /* 科技感網格覆蓋層 */
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
       z-index: 1;
       pointer-events: none;
-      background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      background-size: 100% 4px, 6px 100%;
+      opacity: 0.25; 
     }
 
     /* 卡片 */
     .card {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 2px solid var(--border);
-      border-radius: 12px; /* 改為較硬朗的科技感微圓角 */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(179, 179, 179, 0.267);
+      border-radius: 12px; 
       padding: 2.5rem 2rem;
       max-width: 360px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 0 20px rgba(79, 4, 102, 0.2), inset 0 0 15px rgba(181, 6, 224, 0.1);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.356), inset 0 0 15px rgba(15, 226, 233, 0.548);
       animation: card-entrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       opacity: 0;
       transform: translateY(20px);
@@ -88,11 +88,10 @@
 
     @keyframes card-entrance { to { opacity: 1; transform: translateY(0); } }
 
-    /* 頭像外框改為雷達/目標鎖定風格 */
     .avatar-wrapper {
       position: relative;
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       margin: 0 auto 1.5rem;
     }
 
@@ -112,8 +111,8 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #000000;
-      filter: grayscale(20%) sepia(10%) hue-rotate(85deg); /* 帶有綠色矩陣濾鏡感 */
+      border: 2px solid #000000;
+      filter: grayscale(20%) sepia(10%) hue-rotate(85deg); 
       transition: all 0.3s ease;
       z-index: 1;
     }
@@ -138,7 +137,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.486);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.541);
       transition: all 0.3s ease;
     }
 
@@ -185,34 +184,30 @@
       background: rgba(0, 0, 0, 0.397);
     }
 
-    /* 文字與光標閃爍 */
+    /* 文字 */
     h1 {
-      font-family: 'Share Tech Mono', sans-serif;
-      font-size: 1.8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
       font-weight: 600;
-      margin-bottom: 0.8rem;
-      letter-spacing: 0.05em;
-      color: #fff;
-      text-shadow: 0 0 8px var(--accent);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+      animation: text-fade-in 0.6s 0.2s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes text-fade-in {
+      to { opacity: 1; }
     }
 
     .bio {
       color: var(--fg-muted);
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       font-weight: 400;
       line-height: 1.6;
       margin-bottom: 0.4rem;
       text-align: left;
     }
-    
-    /* 終端閃爍光標模擬 */
-    .bio::after {
-      content: "_";
-      animation: blink 1s infinite;
-    }
-    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
-    /* 音訊專區標題 */
     .audio-section-title {
       font-family: 'Share Tech Mono', sans-serif;
       font-size: 1rem;
@@ -226,7 +221,6 @@
       text-shadow: 0 0 5px var(--accent-dim);
     }
 
-    /* 音軌清單 */
     .audio-tracks {
       display: flex;
       flex-direction: column;
@@ -238,8 +232,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(189, 0, 196, 0);
-      border: 2px solid rgba(248, 248, 248, 0.699);
+      background: rgba(112, 112, 112, 0.26);
+      border: 1px solid rgba(180, 180, 180, 0.582);
       padding: 0.7rem 1rem;
       border-radius: 4px;
       cursor: pointer;
@@ -247,14 +241,14 @@
       text-align: left;
     }
     .track-item:hover {
-      background: rgba(136, 16, 66, 0.534);
+      background: rgba(9, 121, 96, 0.288);
       border-color: var(--accent);
-      box-shadow: 0 0 8px rgba(225, 0, 255, 0.2);
+      box-shadow: 0 0 8px rgba(11, 165, 132, 0.2);
     }
     .track-item.playing {
-      background: rgba(202, 2, 142, 0.2);
+      background: rgba(49, 202, 169, 0.377);
       border-color: var(--accent);
-      box-shadow: 0 0 12px rgba(255, 0, 128, 0.3);
+      box-shadow: 0 0 12px rgba(10, 187, 172, 0.61);
     }
     .track-name {
       font-size: 0.85rem;
@@ -268,7 +262,6 @@
       font-size: 0.85rem;
     }
 
-    /* 社交連結按鈕：改為代碼終端風格 */
     .social-links {
       display: flex;
       flex-direction: column;
@@ -286,8 +279,8 @@
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--fg);
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(231, 10, 146, 0.4);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.712);
       transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
@@ -296,35 +289,37 @@
       animation: btn-entrance 0.4s ease-out forwards;
     }
 
-    .btn:nth-child(1) { animation-delay: 0.2s; }
-    .btn:nth-child(2) { animation-delay: 0.3s; }
-    .btn:nth-child(3) { animation-delay: 0.4s; }
-    .btn:nth-child(4) { animation-delay: 0.5s; }
+    .btn:nth-child(1) { animation-delay: 0.05s; }
+    .btn:nth-child(2) { animation-delay: 0.10s; }
+    .btn:nth-child(3) { animation-delay: 0.15s; }
+    .btn:nth-child(4) { animation-delay: 0.20s; }
+    .btn:nth-child(5) { animation-delay: 0.25s; }
+  /*.btn:nth-child(6) { animation-delay: 0.30s; }
+    .btn:nth-child(7) { animation-delay: 0.35s; }
+    .btn:nth-child(8) { animation-delay: 0.40s; }
+    .btn:nth-child(9) { animation-delay: 0.45s; }*/
 
     @keyframes btn-entrance { to { opacity: 1; transform: translateX(0); } }
 
-    /* 按鈕懸停霓虹掃描線特效 */
     .btn:hover {
-      background: rgba(133, 5, 133, 0.15);
+      background: rgba(212, 27, 141, 0.5);
       border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(230, 86, 187, 0.233);
-      color: #ffffff;
+      box-shadow: 0 0 15px #8d08775d;
       transform: scale(1.02);
     }
     .btn:active { transform: scale(0.98); }
     .btn i { font-size: 1.1rem; width: 20px; text-align: center; }
 
-    /* 頁尾 */
     .footer {
       margin-top: 25px;
       font-size: 11px;
       font-family: 'Share Tech Mono', monospace;
       color: var(--fg-muted);
-      opacity: 0.5;
+      opacity: 0.6;
       letter-spacing: 0.05em;
     }
 
-    /* ===== 底部全域音樂播放列（賽博終端黑） ===== */
+    /* ===== 音樂播放列 ===== */
     .audio-player-bar {
       position: fixed;
       bottom: 0;
@@ -335,10 +330,9 @@
       -webkit-backdrop-filter: blur(10px);
       border-top: 2px solid var(--accent);
       padding: 15px 25px;
-      display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 -5px 25px rgba(241, 60, 166, 0.514);
+      box-shadow: 0 -5px 25px rgba(56, 32, 5, 0.849);
       z-index: 1000;
       display: none;
     }
@@ -368,7 +362,7 @@
     .player-title {
       font-size: 0.85rem;
       font-weight: 600;
-      color: #fff;
+      color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -376,7 +370,7 @@
 
     .player-artist {
       font-size: 0.75rem;
-      color: var(--fg-muted);
+      color: #c7c7c7;
       font-family: 'Share Tech Mono', monospace;
     }
 
@@ -414,13 +408,13 @@
       gap: 10px;
       font-size: 0.75rem;
       font-family: 'Share Tech Mono', monospace;
-      color: var(--fg-muted);
+      color: #aaa;
     }
 
     .progress-bar {
       flex-grow: 1;
       height: 4px;
-      background: rgba(160, 13, 103, 0.15);
+      background: rgba(0, 0, 0, 0.432);
       border-radius: 2px;
       cursor: pointer;
       position: relative;
@@ -449,12 +443,8 @@
       accent-color: var(--accent);
     }
 
-    /* 響應式 */
     @media (max-width: 500px) {
       .card { padding: 2rem 1.25rem; }
-      .avatar-wrapper { width: 100px; height: 100px; }
-      h1 { font-size: 1.5rem; }
-      .bio { font-size: 0.85rem; }
       .player-left { width: 60%; }
       .player-center { width: 40%; }
       .player-right { display: none; }
@@ -468,53 +458,137 @@
       }
       #canvas-matrix { display: none; }
     }
+
+    .avatar-wrapper {
+        width: 100px;
+        height: 100px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .bio {
+        font-size: 0.875rem;
+      }
+
+/* 容器整體設計 */
+.bio-container {
+    background-color: #3030302a; /* 輕微的淡藍色背景，營造校園和諧感 */
+    border-left: 3px solid #dadada; /* 左側藍色邊框，增加視覺重心 */
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    border-radius: 4px 8px 8px 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.445);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 標題樣式 */
+.bio-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #c7c7c7;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* 列表樣式 */
+.bio-list {
+    list-style-type: none; /* 移除預設的黑點 */
+    padding-left: 5px;
+    margin: 0;
+}
+
+/* 列表項目樣式 */
+.bio-list li {
+    font-size: 0.95rem;
+    color: #ffffffd8;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 20px;
+}
+
+/* 用可愛的小箭頭取代傳統黑點 */
+.bio-list li::before {
+    content: "✨"; /* 第一個容器可以用閃亮貼圖，或者統一用如下的箭頭 */
+    /* content: "•"; 如果想要簡約點 */
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.image-container {
+  width: 100%;
+  max-width: 500px; /* Adjust max width as needed */
+  margin: 0 auto;
+}
+
+.image-container img {
+  width: 100%;
+  border-radius: 10px 10px 10px 10px;
+  height: auto;
+  display: block;
+}
   </style>
 </head>
 <body>
 
-  <!-- 數位雨 Canvas 與濾鏡層 -->
   <canvas id="canvas-matrix"></canvas>
   <div class="grid-overlay"></div>
 
-  <!-- 個人主卡片 -->
   <div class="card">
     <div class="avatar-wrapper">
       <div class="avatar-ring"></div>
-      <img src="f8948bd1-1f84-4658-aba5-c52985b04bcf.gif" class="avatar" alt="" />
+      <img src="b61502cd-314a-429a-9693-f761da68dd11.gif" class="avatar" alt="Avatar" />
     </div>
+
+    <h1>Yuki & 小姐</h1> 
     
-    <h1>Yuki & 小姐</h1>
-    <p class="bio">• 們大家好～我是Yuki小姐！</p>
-    <p class="bio">• 偶像系～想要專一的你們（不是啦～</p>
-    <p class="bio">• 是港V！</p>
-    
-    <!-- 🎵 音訊播放專區 -->
+      <div class="bio-container">
+    <p class="bio-title"></p>
+    <ul class="bio-list">
+        <li>大家哈囉～！這裡是Yuki_小姐💕</li>
+    </ul>
+</div>
+
+      <div class="bio-container">
+    <p class="bio-title"></p>
+    <ul class="bio-list">
+        <li>🎀 基本情報 / プロフィール</li>
+        <li>・名前：Yuki (ユキ)</li>
+        <li>・誕生日：2月6日</li>
+    </ul>
+</div>
+
     <div class="audio-section-title"><i class="fas fa-terminal"></i> CORE_AUDIO_LOG</div>
     <div class="audio-tracks">
-      
-      <div class="track-item" data-src="Way_Back_Home.mp3" data-title="Shaun">
-        <span class="track-name">Way_Back_Home</span>
+      <div class="track-item" data-src="M500002W0xES2xYQVj.mp3" data-title="=LOVE">
+        <span class="track-name">等於愛 | イコールラブ</span>
         <span class="track-play-icon"><i class="fas fa-play"></i></span>
       </div>
-  </div>
+    </div>
 
     <div class="social-links">
-      <>>-<»>==<社交媒體>==<«>-<<>
-      <a href="https://www.facebook.com/profile.php?id=61573278368191" target="_blank" rel="noopener noreferrer" class="btn">
-        <i class="fab fa-facebook"></i> FB // Xiaoxue Misa Yuki
+      <p class="bio"></p> 
+    <>>-<»>==<社群連結>==<«>-<<>
+      <a href="https://discord.gg/aJAQPe6P56" target="_blank" rel="noopener noreferrer" class="btn discord">
+        <i class="fab fa-discord"></i> DC | 喵喵女僕殿堂 🐾 女僕扮 cosplay 社群
       </a>
-      
-      <a href="https://www.instagram.com/haiyi_0206?igsh=MWhsb2k1cDUweWlybw==" target="_blank" rel="noopener noreferrer" class="btn">
-        <i class="fab fa-instagram"></i> IG // haiyi_0206
-      </a>
-      
+
+    <>>-<»>==<直播平台>==<«>-<<>
       <a href="https://www.youtube.com/@Yuki-%E5%B0%8F%E5%A7%90" target="_blank" rel="noopener noreferrer" class="btn">
-        <i class="fab fa-youtube"></i> YT // Yuki_小姐
+        <i class="fab fa-youtube"></i> YT | Yuki_小姐
       </a>
-      
-      <a href="https://discord.gg/aJAQPe6P56" target="_blank" rel="noopener noreferrer" class="btn">
-        <i class="fab fa-discord"></i> DC // 喵喵女僕殿堂 🐾 女僕扮 cosplay 社群
+
+    <>>-<»>==<社交媒體>==<«>-<<>
+      <a href="https://www.facebook.com/profile.php?id=61573278368191" target="_blank" rel="noopener noreferrer" class="btn">
+        <i class="fab fa-facebook"></i> FB | Xiaoxue Misa Yuki
       </a>
+
+      <a href="https://www.instagram.com/haiyi_0206?igsh=MWhsb2k1cDUweWlybw==" target="_blank" rel="noopener noreferrer" class="btn">
+        <i class="fab fa-instagram"></i> IG | haiyi_0206
+      </a>
+
     </div>
 
     <div class="footer">
@@ -522,15 +596,12 @@
     </div>
   </div>
 
-  <!-- 隱藏的原生 HTML5 音訊標籤 -->
-  <audio id="main-audio" preload="metadata"></audio>
-
-  <!--浮動分享按鈕 -->
+  <!-- 浮動分享按鈕 -->
   <div class="share-float" id="share-btn">
     <i class="fas fa-share-alt" style="font-size: 1.5rem;"></i>
   </div>
 
-<!-- 分享選單 -->
+  <!-- 分享選單 -->
   <div class="share-menu" id="share-menu">
     <a href="#" class="share-item" data-platform="facebook"><i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook</a>
     <a href="#" class="share-item" data-platform="twitter"><i class="fab fa-x-twitter"></i> X / Twitter</a>
@@ -539,13 +610,14 @@
     <a href="#" class="share-item" id="copy-link"><i class="fas fa-link"></i> 複製連結</a>
   </div>
 
-  <!-- 底部固定全域播放控制列 -->
+  <audio id="main-audio" preload="metadata"></audio>
+
   <div class="audio-player-bar" id="player-bar">
     <div class="player-left">
       <img src="images.jpeg" alt="Mini Avatar" class="player-avatar">
       <div class="player-meta">
         <span class="player-title" id="bar-title">Null track</span>
-        <span class="player-artist">Way_Back_Home</span>
+        <span class="player-artist">=LOVE - =LOVE (イコールラブ)</span>
       </div>
     </div>
 
@@ -565,15 +637,57 @@
       <input type="range" class="volume-slider" id="volume-range" min="0" max="1" step="0.05" value="0.8">
     </div>
   </div>
-
-  <!-- JavaScript 控制邏輯 -->
   <script>
-    
-    // 2. 音訊播放核心邏輯 (繼承原始封裝)
+
+    // 數位雨 JavaScript 核心邏輯保持不變且運作正常
+    const canvas = document.getElementById('canvas-matrix');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const katakana = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+    const alphabet = katakana.split('');
+    const fontSize = 16;
+    let columns = canvas.width / fontSize;
+    let rainDrops = [];
+
+    function initRain() {
+      columns = canvas.width / fontSize;
+      rainDrops = [];
+      for (let x = 0; x < columns; x++) {
+        rainDrops[x] = 1;
+      }
+    }
+    initRain();
+    window.addEventListener('resize', initRain);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#'; 
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 30);
+
+    // 音訊控制
     const audio = document.getElementById('main-audio');
     const playerBar = document.getElementById('player-bar');
     const trackItems = document.querySelectorAll('.track-item');
-    
     const barTitle = document.getElementById('bar-title');
     const barPlayToggle = document.getElementById('bar-play-toggle');
     const progressBg = document.getElementById('bar-progress-bg');
@@ -607,7 +721,7 @@
         barTitle.innerText = title;
 
         playerBar.style.display = 'flex';
-        audio.play().catch(err => console.log("播放被阻擋，請與頁面互動:", err));
+        audio.play().catch(err => console.log("播放被阻擋:", err));
         barPlayToggle.innerHTML = '<i class="fas fa-pause"></i>';
       });
     });
@@ -619,7 +733,6 @@
 
     function togglePlay() {
       if (!currentTrackItem) return;
-
       if (audio.paused) {
         audio.play();
         barPlayToggle.innerHTML = '<i class="fas fa-pause"></i>';
@@ -670,7 +783,7 @@
       return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
     }
 
-    <!-- ==================== 社群分享功能 ==================== -->
+    // ==================== 社群分享功能 ====================
     const shareBtn = document.getElementById('share-btn');
     const shareMenu = document.getElementById('share-menu');
     const pageTitle = document.title;
