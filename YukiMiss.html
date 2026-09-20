@@ -19,12 +19,12 @@
       --bg-primary: rgba(0, 0, 0, 0.205);
       --bg-secondary: ;
       --fg: #ffffff; 
-      --fg-muted: #ffffffee;
+      --fg-muted: #ffffffc9;
       --accent: #eeeeee;
-      --accent-dim: rgba(172, 43, 86, 0.486);
-      --card-bg: rgba(148, 71, 129, 0.199);
-      --border: #af5190; /* 修正：補足 6 位碼 */
-      --player-bg: rgba(184, 53, 177, 0.404);
+      --accent-dim: rgba(172, 43, 86, 0.5);
+      --card-bg: rgba(148, 71, 129, 0.219);
+      --border: #af5190de; /* 修正：補足 6 位碼 */
+      --player-bg: rgba(185, 89, 181, 0.137);
     }
 
     html {
@@ -73,13 +73,13 @@
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(179, 179, 179, 0.267);
+      border: 1px solid rgba(179, 179, 179, 0.336);
       border-radius: 12px; 
       padding: 2.5rem 2rem;
       max-width: 360px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.356), inset 0 0 15px rgba(15, 226, 233, 0.548);
+      box-shadow: 0 0 30px rgba(190, 20, 206, 0.274), inset 0 0 15px rgba(233, 15, 179, 0.5);
       animation: card-entrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       opacity: 0;
       transform: translateY(20px);
@@ -111,7 +111,7 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #000000;
+      border: 2px solid #000000c2;
       filter: grayscale(20%) sepia(10%) hue-rotate(85deg); 
       transition: all 0.3s ease;
       z-index: 1;
@@ -233,7 +233,7 @@
       align-items: center;
       justify-content: space-between;
       background: rgba(112, 112, 112, 0.26);
-      border: 1px solid rgba(180, 180, 180, 0.582);
+      border: 1px solid rgba(180, 180, 180, 0.466);
       padding: 0.7rem 1rem;
       border-radius: 4px;
       cursor: pointer;
@@ -294,10 +294,10 @@
     .btn:nth-child(3) { animation-delay: 0.15s; }
     .btn:nth-child(4) { animation-delay: 0.20s; }
     .btn:nth-child(5) { animation-delay: 0.25s; }
-  /*.btn:nth-child(6) { animation-delay: 0.30s; }
+    .btn:nth-child(6) { animation-delay: 0.30s; }
     .btn:nth-child(7) { animation-delay: 0.35s; }
     .btn:nth-child(8) { animation-delay: 0.40s; }
-    .btn:nth-child(9) { animation-delay: 0.45s; }*/
+    .btn:nth-child(9) { animation-delay: 0.45s; }
 
     @keyframes btn-entrance { to { opacity: 1; transform: translateX(0); } }
 
@@ -325,6 +325,7 @@
       bottom: 0;
       left: 0;
       right: 0;
+      border-radius: 25px 25px 0px 0px;
       background: var(--player-bg);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -332,7 +333,7 @@
       padding: 15px 25px;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 -5px 25px rgba(56, 32, 5, 0.849);
+      box-shadow: 0 -5px 25px rgba(253, 130, 247, 0.589);
       z-index: 1000;
       display: none;
     }
@@ -502,15 +503,15 @@
 /* 列表項目樣式 */
 .bio-list li {
     font-size: 0.95rem;
-    color: #ffffffd8;
+    color: #fffffff5;
     margin-bottom: 8px;
     position: relative;
-    padding-left: 20px;
+    padding-left: 0px;
 }
 
 /* 用可愛的小箭頭取代傳統黑點 */
 .bio-list li::before {
-    content: "✨"; /* 第一個容器可以用閃亮貼圖，或者統一用如下的箭頭 */
+    content: ""; /* 第一個容器可以用閃亮貼圖，或者統一用如下的箭頭 */
     /* content: "•"; 如果想要簡約點 */
     position: absolute;
     left: 0;
@@ -554,10 +555,12 @@
       <div class="bio-container">
     <p class="bio-title"></p>
     <ul class="bio-list">
-        <li>🎀 基本情報 / プロフィール</li>
-        <li>・名前：Yuki (ユキ)</li>
-        <li>・誕生日：2月6日</li>
+        <li>身分定位：全能小兔兔 🐰、遊戲實況主、蘿蔔園的快樂泉源。</li>
     </ul>
+</div>
+
+      <div class="image-container">
+    <p class="bio-title"></p>
 </div>
 
     <div class="audio-section-title"><i class="fas fa-terminal"></i> CORE_AUDIO_LOG</div>
@@ -611,7 +614,7 @@
 
   <div class="audio-player-bar" id="player-bar">
     <div class="player-left">
-      <img src="イコールラブ.jpeg" alt="Mini Avatar" class="player-avatar">
+      <img src="images.jpeg" alt="Mini Avatar" class="player-avatar">
       <div class="player-meta">
         <span class="player-title" id="bar-title">Null track</span>
         <span class="player-artist">=LOVE - =LOVE (イコールラブ)</span>
